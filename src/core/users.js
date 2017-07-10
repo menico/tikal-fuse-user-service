@@ -1,5 +1,5 @@
 const datastore = require('nedb')
-const db = new datastore()
+const db = new datastore({ filename: './src/db/userDatabase.db',  autoload: true  })
 
 const saveUser = (userObject) => {
   db.insert({

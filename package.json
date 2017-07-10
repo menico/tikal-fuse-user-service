@@ -6,13 +6,9 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
-    "http-proxy": "^1.16.2",
     "jsonwebtoken": "^7.4.1",
     "nedb": "^1.8.0",
-    "passport": "^0.3.2",
-    "passport-github2": "^0.1.10",
-    "tikal-fuse-core": "git+https://github.com/menico/tikal-fuse-core.git",
-    "uuid": "^3.1.0"
+    "tikal-fuse-core": "git+https://github.com/menico/tikal-fuse-core.git"
   },
   "devDependencies": {
     "eslint": "^4.2.0",
@@ -23,7 +19,7 @@
     "eslint-plugin-standard": "^3.0.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",

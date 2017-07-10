@@ -7,7 +7,9 @@ const app = express()
 
 app.post('/user/register', bodyParser.json(), (req, res, next) => {
   return registerUser(req.body).then(result => {
-    res.send(result)
+    res.send({
+      jwt:result
+    })
   })
 })
 const createJwt = userData => {
@@ -20,19 +22,16 @@ const createJwt = userData => {
 }
 
 const registerUser = userObject => {
-
   return new Promise(function (resolve, reject) {
     const findUser = users.getUser(userObject.login)
     let jwtToken = findUser
-
     if (!findUser) {
       jwtToken = users.saveUser(userObject)
     }
-
     resolve(createJwt(jwtToken))
   })
 }
 
-app.listen(3001, (data) => {
-  console.log('server running on 3001')
+app.listen(8080, (data) => {
+  console.log('server running on 8080')
 })

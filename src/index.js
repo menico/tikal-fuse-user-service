@@ -24,3 +24,6 @@ app.use('/api/tutor', (req, res, next) =>
 
 app.use('/api/roadmap', (req, res, next) =>
   proxy.web(req, res, {target: getServiceHost('roadmap')}))
+
+app.use('/api/student', (req, res, next) =>
+  proxy.web(req, res, {target: getServiceHost('student')}))

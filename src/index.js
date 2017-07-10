@@ -5,6 +5,10 @@ const bodyParser = require('body-parser')
 
 const app = express()
 
+app.get('/', function (req, res) {
+  res.send("I'm alive")
+})
+
 app.post('/user/register', bodyParser.json(), (req, res, next) => {
   return registerUser(req.body).then(result => {
     res.send({

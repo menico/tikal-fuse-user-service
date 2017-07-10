@@ -1,29 +1,38 @@
 const express = require('express')
-const httpProxy = require('http-proxy')
-
-const getServiceHost = name => name // get from discovery
+const users = require('./core/users')
+const jwt = require('jsonwebtoken')
+const bodyParser = require('body-parser')
 
 const app = express()
-const passport = require('passport')
 
-app.get('/auth/github',
-  passport.authenticate('github', { scope: [ 'user:email' ] }))
-
-app.get('/auth/github/callback', 
-  passport.authenticate('github', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
+app.post('/user/register', bodyParser.json(), (req, res, next) => {
+  return registerUser(req.body).then(result => {
+    res.send(result)
   })
+})
+const createJwt = userData => {
+  return jwt.sign({
+    data: userData
+  },
+    'tikalFuseSecret',
+    { expiresIn: '5m' }
+  )
+}
 
-app.use('/api/author', (req, res, next) =>
-  proxy.web(req, res, {target: getServiceHost('author')}))
+const registerUser = userObject => {
 
-app.use('/api/tutor', (req, res, next) =>
-  proxy.web(req, res, {target: getServiceHost('tutor')}))
+  return new Promise(function (resolve, reject) {
+    const findUser = users.getUser(userObject.login)
+    let jwtToken = findUser
 
-app.use('/api/roadmap', (req, res, next) =>
-  proxy.web(req, res, {target: getServiceHost('roadmap')}))
+    if (!findUser) {
+      jwtToken = users.saveUser(userObject)
+    }
 
-app.use('/api/student', (req, res, next) =>
-  proxy.web(req, res, {target: getServiceHost('student')}))
+    resolve(createJwt(jwtToken))
+  })
+}
+
+app.listen(3001, (data) => {
+  console.log('server running on 3001')
+})
